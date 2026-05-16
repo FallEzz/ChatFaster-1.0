@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatFaster 1.0</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, sans-serif;
+      overflow-x: hidden;
+      background: #07111f;
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .glow {
+      box-shadow: 0 0 80px rgba(59,130,246,0.25);
+    }
+
+    .floating {
+      animation: floating 6s ease-in-out infinite;
+    }
+
+    .floating2 {
+      animation: floating 8s ease-in-out infinite;
+    }
+
+    .fadeUp {
+      animation: fadeUp 1s ease forwards;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .pulseGlow {
+      animation: pulseGlow 2.5s infinite;
+    }
+
+    .buttonLive {
+      position: relative;
+      overflow: hidden;
+      transition: all .35s ease;
+    }
+
+    .buttonLive:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 0 40px rgba(59,130,246,0.45);
+    }
+
+    .buttonLive:active {
+      transform: scale(.97);
+    }
+
+    .buttonLive::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      transition: .7s;
+    }
+
+    .buttonLive:hover::before {
+      left: 120%;
+    }
+
+    .cardHover {
+      transition: all .4s ease;
+    }
+
+    .cardHover:hover {
+      transform: translateY(-12px) scale(1.02);
+      border-color: rgba(255,255,255,0.12);
+      box-shadow: 0 0 50px rgba(59,130,246,0.18);
+    }
+
+    .parallax {
+      transform: translateY(var(--translateY));
+      transition: transform .1s linear;
+    }
+
+    @keyframes floating {
+      0%,100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-18px);
+      }
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0px);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%,100% {
+        box-shadow: 0 0 30px rgba(59,130,246,0.2);
+      }
+      50% {
+        box-shadow: 0 0 70px rgba(59,130,246,0.45);
+      }
+    }
+  </style>
+</head>
+<body class="text-white transition-all duration-500" id="body">
+
+  <!-- Blur Background -->
+  <div class="fixed top-0 left-0 w-[500px] h-[500px] bg-blue-500/20 blur-[120px] rounded-full floating"></div>
+  <div class="fixed bottom-0 right-0 w-[500px] h-[500px] bg-cyan-400/20 blur-[120px] rounded-full floating2"></div>
+
+  <!-- Navbar -->
+  <nav class="relative z-50 flex items-center justify-between px-6 md:px-10 py-6 border-b border-white/5 glass">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center glow">
+        ✦
+      </div>
+
+      <div>
+        <h1 class="font-bold text-xl">ChatFaster AI</h1>
+        <p class="text-xs text-white/40">AI Platform</p>
+      </div>
+    </div>
+
+    <div class="hidden md:flex items-center gap-10 text-sm text-white/70">
+      <a href="#features" class="hover:text-white transition-all">Features</a>
+      <a href="#pricing" class="hover:text-white transition-all">Pricing</a>
+      <a href="#docs" class="hover:text-white transition-all">Docs</a>
+      <a href="#contact" class="hover:text-white transition-all">Contact</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button
+        onclick="toggleTheme()"
+        class="glass w-12 h-12 rounded-2xl hover:scale-105 transition-all"
+      >
+        ☀
+      </button>
+
+      <button
+        onclick="openLoginModal()"
+        class="glass px-5 py-3 rounded-2xl font-semibold hover:bg-white/10 transition-all buttonLive"
+      >
+        Sign In
+      </button>
+
+      <button
+        onclick="startBuild()"
+        class="bg-gradient-to-r from-blue-500 to-cyan-400 px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition-all glow"
+      >
+        Start Build
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="relative z-10 px-6 md:px-10 pt-24 md:pt-32 pb-24 fadeUp">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+
+      <!-- Left -->
+      <div>
+        <div class="inline-flex items-center gap-2 glass rounded-full px-5 py-2 text-sm text-white/70">
+          ✦ Powered by Grok AI & n8n
+        </div>
+
+        <h1 class="mt-8 text-5xl md:text-7xl font-black leading-[1.05] tracking-tight">
+          Build Smarter.<br />
+          Automate Faster.<br />
+          <span class="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+            Scale Limitlessly.
+          </span>
+        </h1>
+
+        <p class="mt-8 text-lg text-white/60 leading-relaxed max-w-2xl">
+          ChatFaster adalah platform AI modern dengan realtime streaming,
+          workflow automation, dashboard elegan, dan pengalaman AI premium.
+        </p>
+
+        <div class="mt-10 flex flex-col sm:flex-row gap-4">
+          <button
+            onclick="startBuild()"
+            class="bg-gradient-to-r from-blue-500 to-cyan-400 px-8 py-4 rounded-2xl font-semibold glow pulseGlow buttonLive"
+          >
+            Start Build Now →
+          </button>
+
+          <a
+            href="#pricing"
+            class="glass px-8 py-4 rounded-2xl font-semibold hover:bg-white/10 transition-all text-center buttonLive"
+          >
+            View Pricing
+          </a>
+        </div>
+
+        <div class="mt-10 flex flex-wrap gap-8 text-white/60 text-sm">
+          <div>✓ Realtime AI Stream</div>
+          <div>✓ Easy Integration</div>
+          <div>✓ Secure & Fast</div>
+        </div>
+      </div>
+
+      <!-- Preview Chatbot -->
+      <div class="relative">
+        <div class="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full"></div>
+
+        <div class="relative glass rounded-[34px] overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.45)] floating">
+          <div class="flex items-center gap-2 px-6 py-5 border-b border-white/5">
+            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+          </div>
+
+          <div class="grid md:grid-cols-[240px_1fr] min-h-[600px]">
+
+            <!-- Sidebar Preview -->
+            <div class="hidden md:block border-r border-white/5 p-5 bg-black/20">
+              <button class="w-full bg-gradient-to-r from-blue-500 to-cyan-400 py-4 rounded-2xl font-semibold">
+                + New Chat
+              </button>
+
+              <div class="mt-6 space-y-3 text-sm">
+                <div class="glass rounded-2xl p-4">
+                  Membuat Landing Page
+                </div>
+
+                <div class="glass rounded-2xl p-4">
+                  Analisis AI Marketing
+                </div>
+
+                <div class="glass rounded-2xl p-4">
+                  Workflow Automation
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Preview -->
+            <div class="flex flex-col justify-between p-6">
+              <div class="space-y-5">
+                <div class="flex justify-end">
+                  <div class="bg-gradient-to-r from-blue-500 to-cyan-400 rounded-[28px] rounded-br-md px-6 py-5 max-w-md shadow-2xl">
+                    Buatkan landing page modern untuk AI SaaS.
+                  </div>
+                </div>
+
+                <div class="flex justify-start">
+                  <div class="bg-white text-black rounded-[28px] rounded-bl-md px-6 py-5 max-w-xl shadow-2xl leading-relaxed">
+                    Tentu — saya akan membuat landing page modern dengan tema dark elegan, realtime AI stream, automation workflow, dan dashboard premium.
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-10 glass rounded-[28px] p-3 flex items-center gap-3">
+                <button class="bg-gradient-to-r from-blue-500 to-cyan-400 w-12 h-12 rounded-2xl font-bold">
+                  +
+                </button>
+
+                <input
+                  placeholder="Message ChatFaster AI..."
+                  class="flex-1 bg-transparent outline-none placeholder:text-white/40"
+                />
+
+                <button class="bg-white text-black px-5 py-3 rounded-2xl font-semibold">
+                  →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="relative z-10 px-6 md:px-10 py-24">
+    <div class="max-w-7xl mx-auto text-center">
+      <h2 class="text-4xl md:text-5xl font-black">
+        Everything You Need
+      </h2>
+
+      <p class="mt-5 text-white/50 max-w-2xl mx-auto">
+        Build modern AI products with realtime streaming and automation.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-8 mt-20">
+        <div class="glass rounded-[30px] p-8 cardHover">
+          <div class="text-5xl mb-5">⚡</div>
+          <h3 class="text-2xl font-bold">Realtime AI</h3>
+          <p class="mt-4 text-white/50">
+            Streaming AI response seperti ChatGPT.
+          </p>
+        </div>
+
+        <div class="glass rounded-[30px] p-8 cardHover">
+          <div class="text-5xl mb-5">🔗</div>
+          <h3 class="text-2xl font-bold">n8n Automation</h3>
+          <p class="mt-4 text-white/50">
+            Integrasi workflow automation tanpa batas.
+          </p>
+        </div>
+
+        <div class="glass rounded-[30px] p-8 cardHover">
+          <div class="text-5xl mb-5">🎨</div>
+          <h3 class="text-2xl font-bold">Premium UI</h3>
+          <p class="mt-4 text-white/50">
+            Minimalist dan elegant interface modern.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <!-- Docs Section -->
+  <section id="docs" class="relative z-10 px-6 md:px-10 py-24">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-4xl md:text-5xl font-black">
+        Documentation
+      </h2>
+
+      <p class="mt-5 text-white/50 max-w-2xl mx-auto leading-relaxed">
+        Integrate ChatFaster AI with Grok API, realtime streaming, automation workflows, and modern dashboard systems.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-8 mt-20">
+
+        <div class="glass rounded-[30px] p-8 cardHover">
+          <div class="text-5xl mb-5">📘</div>
+          <h3 class="text-2xl font-bold">
+            API Reference
+          </h3>
+
+          <p class="mt-4 text-white/50 leading-relaxed">
+            Learn how to connect Grok AI API and realtime streaming systems.
+          </p>
+
+          <button class="mt-8 w-full bg-gradient-to-r from-blue-500 to-cyan-400 py-4 rounded-2xl font-semibold buttonLive">
+            Open Docs
+          </button>
+        </div>
+
+        <div class="glass rounded-[30px] p-8 cardHover">
+          <div class="text-5xl mb-5">⚡</div>
+          <h3 class="text-2xl font-bold">
+            n8n Workflow
+          </h3>
+
+          <p class="mt-4 text-white/50 leading-relaxed">
+            Connect automation workflows with webhooks and AI systems.
+          </p>
+
+          <button class="mt-8 w-full bg-gradient-to-r from-blue-500 to-cyan-400 py-4 rounded-2xl font-semibold buttonLive">
+            Workflow Guide
+          </button>
+        </div>
+
+        <div class="glass rounded-[30px] p-8 cardHover">
+          <div class="text-5xl mb-5">🚀</div>
+          <h3 class="text-2xl font-bold">
+            Deployment
+          </h3>
+
+          <p class="mt-4 text-white/50 leading-relaxed">
+            Deploy ChatFaster AI instantly to Vercel and modern cloud platforms.
+          </p>
+
+          <button class="mt-8 w-full bg-gradient-to-r from-blue-500 to-cyan-400 py-4 rounded-2xl font-semibold buttonLive">
+            Deploy Guide
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="relative z-10 px-6 md:px-10 py-24">
+    <div class="max-w-5xl mx-auto">
+      <div class="glass rounded-[36px] p-10 md:p-14 cardHover overflow-hidden relative">
+
+        <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-blue-500/10 blur-[100px] rounded-full"></div>
+
+        <div class="relative z-10 text-center">
+          <h2 class="text-4xl md:text-5xl font-black">
+            Contact Developer
+          </h2>
+
+          <p class="mt-5 text-white/50 max-w-2xl mx-auto leading-relaxed">
+            Need custom AI systems, automation workflows, dashboard integrations, or premium SaaS development?
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-8 mt-14">
+
+            <div class="glass rounded-[30px] p-8 cardHover text-left">
+              <div class="text-5xl mb-5">💬</div>
+
+              <h3 class="text-2xl font-bold">
+                WhatsApp Developer
+              </h3>
+
+              <p class="mt-4 text-white/50 leading-relaxed">
+                Fast response for AI development, automation, integrations, and custom dashboard projects.
+              </p>
+
+              <a
+                href="https://wa.me/6285813708397"
+                target="_blank"
+                rel="noopener noreferrer"
+                onclick="window.open('https://wa.me/6285813708397', '_blank')"
+                class="mt-8 inline-flex items-center justify-center w-full bg-gradient-to-r from-blue-500 to-cyan-400 py-4 rounded-2xl font-semibold buttonLive"
+              >
+                Contact WhatsApp
+              </a>
+            </div>
+
+            <div class="glass rounded-[30px] p-8 cardHover text-left">
+              <div class="text-5xl mb-5">📩</div>
+
+              <h3 class="text-2xl font-bold">
+                Email Developer
+              </h3>
+
+              <p class="mt-4 text-white/50 leading-relaxed">
+                Send project collaboration, API partnership, business inquiries, or technical requests.
+              </p>
+
+              <a
+                href="mailto:fallzxcoderid@gmail.com"
+                onclick="window.location.href='mailto:fallzxcoderid@gmail.com'"
+                class="mt-8 inline-flex items-center justify-center w-full bg-white text-black py-4 rounded-2xl font-semibold buttonLive"
+              >
+                Send Email
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="relative z-10 px-6 md:px-10 pb-32">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-4xl md:text-5xl font-black">
+        API Pricing
+      </h2>
+
+      <p class="mt-5 text-white/50">
+        Pilih paket AI sesuai kebutuhanmu.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-8 mt-20">
+
+        <div class="glass rounded-[34px] p-8 cardHover">
+          <h3 class="text-2xl font-bold">Starter</h3>
+          <div class="mt-6 text-5xl font-black">$5</div>
+          <p class="text-white/50 mt-2">/ month</p>
+
+          <button class="mt-10 w-full bg-white text-black py-4 rounded-2xl font-semibold">
+            Buy API Key
+          </button>
+        </div>
+
+        <div class="rounded-[34px] p-8 border border-blue-400/30 bg-gradient-to-b from-blue-500/20 to-cyan-400/10 scale-105 cardHover pulseGlow">
+          <h3 class="text-2xl font-bold">Professional</h3>
+          <div class="mt-6 text-5xl font-black">$15</div>
+          <p class="text-white/50 mt-2">/ month</p>
+
+          <button class="mt-10 w-full bg-gradient-to-r from-blue-500 to-cyan-400 py-4 rounded-2xl font-semibold">
+            Buy API Key
+          </button>
+        </div>
+
+        <div class="glass rounded-[34px] p-8 cardHover">
+          <h3 class="text-2xl font-bold">Enterprise</h3>
+          <div class="mt-6 text-5xl font-black">$49</div>
+          <p class="text-white/50 mt-2">/ month</p>
+
+          <button class="mt-10 w-full bg-white text-black py-4 rounded-2xl font-semibold">
+            Buy API Key
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Login Modal -->
+  <div
+    id="loginModal"
+    class="fixed inset-0 bg-black/60 backdrop-blur-md hidden items-center justify-center z-[999] p-6"
+  >
+    <div class="w-full max-w-md glass rounded-[34px] p-8 relative overflow-hidden fadeUp">
+
+      <div class="absolute top-0 right-0 w-[250px] h-[250px] bg-blue-500/20 blur-[100px] rounded-full"></div>
+
+      <div class="relative z-10">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-3xl font-black">
+              Welcome Back
+            </h2>
+            <p class="text-white/50 mt-2">
+              Sign in to continue using ChatFaster AI.
+            </p>
+          </div>
+
+          <button
+            onclick="closeLoginModal()"
+            class="w-11 h-11 rounded-2xl glass hover:bg-white/10 transition-all buttonLive"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="space-y-4">
+
+          <button
+            onclick="loginGoogle()"
+            class="w-full bg-white text-black py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 hover:scale-[1.02] transition-all buttonLive"
+          >
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              class="w-5 h-5"
+            />
+            Continue with Google
+          </button>
+
+          <button
+            onclick="loginGithub()"
+            class="w-full bg-[#111827] border border-white/10 py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 hover:scale-[1.02] transition-all buttonLive"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+              class="w-5 h-5"
+            />
+            Continue with GitHub
+          </button>
+
+        </div>
+
+        <div class="mt-8 text-center text-sm text-white/40 leading-relaxed">
+          By continuing, you agree to the Terms of Service and Privacy Policy.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-8 text-center text-white/30 text-sm relative z-10">
+    All Right Reversed FallZx Infinity 2026
+  </footer>
+
+  <!-- Firebase Auth -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    import {
+      getAuth,
+      signInWithPopup,
+      GoogleAuthProvider,
+      GithubAuthProvider,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAMw3qM7WH0_UJqXqydcXfDARQvqOiLw5Y",
+      authDomain: "chatfaster-15aab.firebaseapp.com",
+      projectId: "chatfaster-15aab",
+      storageBucket: "chatfaster-15aab.firebasestorage.app",
+      messagingSenderId: "794112843318",
+      appId: "1:794112843318:web:0a40addba8c03a9cfa8297",
+      measurementId: "G-BZR93JMDVF"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const googleProvider = new GoogleAuthProvider();
+    const githubProvider = new GithubAuthProvider();
+
+    window.loginGoogle = async function () {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+
+        alert(`Welcome ${user.displayName} 🚀`);
+
+        closeLoginModal();
+
+        document.querySelectorAll('.authUser').forEach((el) => {
+          el.innerHTML = `👋 ${user.displayName}`;
+        });
+
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    window.loginGithub = async function () {
+      try {
+        const result = await signInWithPopup(auth, githubProvider);
+        const user = result.user;
+
+        alert(`Welcome ${user.displayName} 🚀`);
+
+        closeLoginModal();
+
+        document.querySelectorAll('.authUser').forEach((el) => {
+          el.innerHTML = `👋 ${user.displayName}`;
+        });
+
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    window.logoutUser = async function () {
+      await signOut(auth);
+      location.reload();
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if(user){
+        document.querySelectorAll('.authUser').forEach((el) => {
+          el.innerHTML = `👋 ${user.displayName}`;
+        });
+      }
+    });
+  </script>
+
+  <script>
+    let light = false;
+
+    function toggleTheme() {
+      const body = document.getElementById('body');
+      light = !light;
+
+      if(light){
+        body.classList.remove('bg-[#07111f]', 'text-white');
+        body.classList.add('bg-white', 'text-black');
+
+        // Fix pricing text visibility in light mode
+        document.querySelectorAll('.text-white\/50').forEach((el) => {
+          el.classList.remove('text-white/50');
+          el.classList.add('text-black/60');
+        });
+
+        document.querySelectorAll('.text-white\/40').forEach((el) => {
+          el.classList.remove('text-white/40');
+          el.classList.add('text-black/50');
+        });
+
+      } else {
+        body.classList.remove('bg-white', 'text-black');
+        body.classList.add('bg-[#07111f]', 'text-white');
+
+        // Restore dark mode colors
+        document.querySelectorAll('.text-black\/60').forEach((el) => {
+          el.classList.remove('text-black/60');
+          el.classList.add('text-white/50');
+        });
+
+        document.querySelectorAll('.text-black\/50').forEach((el) => {
+          el.classList.remove('text-black/50');
+          el.classList.add('text-white/40');
+        });
+      }
+    }
+
+    function openLoginModal(){
+      document.getElementById('loginModal').classList.remove('hidden');
+      document.getElementById('loginModal').classList.add('flex');
+    }
+
+    function closeLoginModal(){
+      document.getElementById('loginModal').classList.remove('flex');
+      document.getElementById('loginModal').classList.add('hidden');
+    }
+
+    // Firebase authentication already connected from module script above
+
+    function startBuild(){
+      alert('Nanti akan diarahkan ke dashboard chatbot 🚀');
+    }
+
+    // Scroll Reveal Animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('fadeUp');
+        }
+      });
+    });
+
+    document.querySelectorAll('section, .cardHover').forEach((el) => {
+      observer.observe(el);
+    });
+
+    // Parallax Effect
+    document.addEventListener('mousemove', (e) => {
+      const moveX = (e.clientX / window.innerWidth - 0.5) * 20;
+      const moveY = (e.clientY / window.innerHeight - 0.5) * 20;
+
+      document.querySelectorAll('.floating').forEach((el) => {
+        el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+      });
+    });
+  </script>
+
+</body>
+</html>
